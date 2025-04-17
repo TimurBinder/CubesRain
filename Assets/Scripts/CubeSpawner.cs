@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 public class CubeSpawner : MonoBehaviour
 {
     [SerializeField] private Cube _prefab;
-    [SerializeField] private Vector3[] _startPoints;
+    [SerializeField] private Transform[] _startPoints;
     [SerializeField] private float _repeatRate = 1.0f;
     [SerializeField] private int _poolCapacity = 10;
     [SerializeField] private int _poolMaxSize = 10;
@@ -41,8 +41,8 @@ public class CubeSpawner : MonoBehaviour
 
     private void ActionOnGet(Cube cube)
     {
-        Vector3 randomStartPoint = _startPoints[Random.Range(0, _startPoints.Length)];
-        cube.gameObject.transform.position = randomStartPoint;
+        Transform randomStartPoint = _startPoints[Random.Range(0, _startPoints.Length)];
+        cube.gameObject.transform.position = randomStartPoint.position;
         cube.gameObject.SetActive(true);
     }
 

@@ -1161,14 +1161,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 3064218515853199917, guid: dc4c7c089cafcb54595f786858bbca69, type: 3}
   _startPoints:
-  - {fileID: 377481953}
-  - {fileID: 1851328578}
-  - {fileID: 1703646870}
-  - {fileID: 1310047445}
-  - {fileID: 2131814857}
-  - {fileID: 780450734}
-  - {fileID: 583089799}
-  - {fileID: 851476096}
+  - {fileID: 377481954}
+  - {fileID: 1851328579}
+  - {fileID: 1703646871}
+  - {fileID: 1310047446}
+  - {fileID: 2131814858}
+  - {fileID: 780450735}
+  - {fileID: 583089800}
+  - {fileID: 851476097}
   _repeatRate: 1
   _poolCapacity: 10
   _poolMaxSize: 10
