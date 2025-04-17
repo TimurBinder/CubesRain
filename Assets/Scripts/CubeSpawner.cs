@@ -1,10 +1,11 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class CubeSpawner : MonoBehaviour
 {
     [SerializeField] private Cube _prefab;
-    [SerializeField] private GameObject[] _startPoints;
+    [SerializeField] private Vector3[] _startPoints;
     [SerializeField] private float _repeatRate = 1.0f;
     [SerializeField] private int _poolCapacity = 10;
     [SerializeField] private int _poolMaxSize = 10;
@@ -14,10 +15,10 @@ public class CubeSpawner : MonoBehaviour
     private void Awake()
     {
         _pool = new ObjectPool<Cube>(
-            createFunc: () => CreateCube(),
+            createFunc: () => Instantiate(_prefab),
             actionOnGet: (cube) => ActionOnGet(cube),
-            actionOnRelease: (cube) => cube.gameObject.SetActive(false),
-            actionOnDestroy: (cube) => DestroyCube(cube),
+            actionOnRelease: (cube) => ActionOnRelease(cube),
+            actionOnDestroy: (cube) => Destroy(cube),
             collectionCheck: true,
             defaultCapacity: _poolCapacity,
             maxSize: _poolMaxSize);
@@ -25,31 +26,29 @@ public class CubeSpawner : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating(nameof(GetCube), 0f, _repeatRate);
+        StartCoroutine(GetCube(_repeatRate));
     }
 
-    private void GetCube()
+    private IEnumerator GetCube(float delay)
     {
-        _pool.Get();
+        while (true)
+        {
+            Cube cube = _pool.Get();
+            cube.DisableActivated += _pool.Release;
+            yield return new WaitForSeconds(delay);
+        }
     }
 
     private void ActionOnGet(Cube cube)
     {
-        GameObject randomStartPoint = _startPoints[Random.Range(0, _startPoints.Length)];
-        cube.gameObject.transform.position = randomStartPoint.transform.position;
+        Vector3 randomStartPoint = _startPoints[Random.Range(0, _startPoints.Length)];
+        cube.gameObject.transform.position = randomStartPoint;
         cube.gameObject.SetActive(true);
     }
 
-    private Cube CreateCube()
+    private void ActionOnRelease(Cube cube)
     {
-        Cube cube = Instantiate(_prefab);
-        cube.ActivateDisable += _pool.Release;
-        return cube;
-    }
-
-    private void DestroyCube(Cube cube)
-    {
-        cube.ActivateDisable -= _pool.Release;
-        Destroy(_prefab);
+        cube.DisableActivated -= _pool.Release;
+        cube.gameObject.SetActive(false);
     }
 }

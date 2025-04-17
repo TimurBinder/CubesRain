@@ -7,19 +7,21 @@ public class Cube : MonoBehaviour
     private int _minDestroyDelay = 2;
     private int _maxDestroyDelay = 5;
     private bool _isActivatedDisable;
+    private MeshRenderer _meshRenderer;
     private Color _originalColor;
 
-    public event UnityAction<Cube> ActivateDisable;
+    public event UnityAction<Cube> DisableActivated;
 
     private void Awake()
     {
-        _originalColor = GetComponent<MeshRenderer>().material.color;
+        _meshRenderer = GetComponent<MeshRenderer>();
+        _originalColor = _meshRenderer.material.color;
     }
 
     private void OnEnable()
     {
         _isActivatedDisable = false;
-        GetComponent<MeshRenderer>().material.color = _originalColor;
+        _meshRenderer.material.color = _originalColor;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -40,6 +42,6 @@ public class Cube : MonoBehaviour
     private IEnumerator Disable(int delay)
     {
         yield return new WaitForSeconds(delay);
-        ActivateDisable.Invoke(this);
+        DisableActivated?.Invoke(this);
     }
 }
