@@ -33,7 +33,7 @@ public class Cube : MonoBehaviour
         {
             _isActivatedDisable = true;
             Color activatedColor = Random.ColorHSV(); ;
-            gameObject.GetComponent<Renderer>().material.color = activatedColor;
+            _meshRenderer.material.color = activatedColor;
             int destroyDelay = Random.Range(_minDestroyDelay, _maxDestroyDelay + 1);
             StartCoroutine(Disable(destroyDelay));
         }

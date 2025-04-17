@@ -31,7 +31,7 @@ public class CubeSpawner : MonoBehaviour
 
     private IEnumerator GetCube(float delay)
     {
-        while (true)
+        while (enabled)
         {
             Cube cube = _pool.Get();
             cube.DisableActivated += _pool.Release;
